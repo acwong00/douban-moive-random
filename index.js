@@ -8,19 +8,11 @@ var getRandomMovie = require('./lib').getRandomMovie;
 
 program
   .version(pjson.version);
-  // .option('-u, --user [user]', 'User id', getRandomMovie);
-
-program
-  .command('hello')
-  .action(function(env, options) {
-    // console.log(env, options);
-  });
 
 program.parse(process.argv);
 
 if (program.args.length === 0) {
   prompt.message = colors.green('');
-  // prompt.delimiter = colors.green('>>')
 
   prompt.start();
   prompt.get({
@@ -39,4 +31,3 @@ if (program.args.length === 0) {
     getRandomMovie(result.userid);
   });
 }
-// console.log(program);
