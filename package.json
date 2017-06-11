@@ -1,6 +1,6 @@
 {
   "name": "douban-movie-random",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "douban movie random CLI tool",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
     "douban",
     "CLI"
   ],
+  "homepage": "https://github.com/acwong00/douban-movie-random-node",
   "author": "acwong",
   "license": "MIT",
   "dependencies": {
