@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-var program = require('commander');
-var prompt = require('prompt');
-var colors = require("colors/safe");
-var pjson = require('./package.json');
-var getRandomMovie = require('./lib').getRandomMovie;
+const program = require('commander');
+const prompt = require('prompt');
+const colors = require("colors/safe");
+const pjson = require('./package.json');
+// const getRandomMovie = require('./lib').getRandomMovie;
+const RandomMovie = require('./lib')
 
 program
   .version(pjson.version);
@@ -28,6 +29,8 @@ if (program.args.length === 0) {
     if (err) {
       throw err;
     }
-    getRandomMovie(result.userid);
+    // getRandomMovie(result.userid);
+    const randomMovie = new RandomMovie(result.userid)
+    randomMovie.getRandomMovie()
   });
 }
