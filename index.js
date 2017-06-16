@@ -1,36 +1,51 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-const prompt = require('prompt');
-const colors = require("colors/safe");
-const pjson = require('./package.json');
-// const getRandomMovie = require('./lib').getRandomMovie;
+const program = require('commander')
+const prompt = require('prompt')
+const colors = require("colors/safe")
+const pjson = require('./package.json')
+const Conf = require('conf')
+// const getRandomMovie = require('./lib').getRandomMovie
 const RandomMovie = require('./lib')
 
-program
-  .version(pjson.version);
+const config = new Conf()
 
-program.parse(process.argv);
+async function main() {
+  program
+    .version(pjson.version)
+    .option('-u, --user [user]', 'Set user')
+    .parse(process.argv)
 
-if (program.args.length === 0) {
-  prompt.message = colors.green('');
+  const user = await getUser(program);
 
-  prompt.start();
-  prompt.get({
-    properties: {
-      userid: {
-        type: 'string',
-        required: true,
-        message: colors.red('Please input douban id or nickname'),
-        description: colors.green('Please input douban id or nickname')
-      }
-    }
-  }, function(err, result) {
-    if (err) {
-      throw err;
-    }
-    // getRandomMovie(result.userid);
-    const randomMovie = new RandomMovie(result.userid)
-    randomMovie.getRandomMovie()
-  });
+  const randomMovie = new RandomMovie(user)
+  randomMovie.getRandomMovie()
 }
+
+function getUser(program) {
+  return new Promise((resolve, reject) => {
+    if (program.user && program.user !== true) {
+      resolve(program.user)
+    } else if (config.get('user')) {
+      resolve(config.get('user'))
+    } else if (program.user === true || program.args.length === 0) {
+      prompt.message = colors.green('')
+
+      prompt.start()
+      prompt.get({
+        properties: {
+          user: {
+            type: 'string',
+            required: true,
+            message: colors.red('Please input douban id or nickname'),
+            description: colors.green('Please input douban id or nickname')
+          }
+        }
+      }, (err, result) => {
+        resolve(result.user)
+      })
+    }
+  })
+}
+
+main()
